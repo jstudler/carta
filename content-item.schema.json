@@ -1,0 +1,102 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "content-item.schema.json",
+  "title": "Content Item Metadata",
+  "description": "Schema for YAML frontmatter embedded in artistic research content HTML files. Parsed at build time by gray-matter. Cross-file constraints (exactly one conclusion per topic, conclusion date must be newest in its topic) are enforced by the Vite build plugin, not by this schema.",
+  "type": "object",
+  "required": ["title", "date", "topic"],
+  "properties": {
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable title of the content item. Displayed on the card and in the table of contents."
+    },
+    "date": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}(T\\d{2}:\\d{2}(:\\d{2})?([+-]\\d{2}:\\d{2}|Z)?)?$",
+      "description": "ISO 8601 date or datetime of when this event/entry occurred (e.g. 2025-03-14 or 2025-03-14T15:30:00). Used for timeline placement and to validate that conclusion items are the newest in their topic. If set to midnight (e.g. 2025-03-14T00:00:00) it is considered a date without a time component."
+    },
+    "topic": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Topic of the artistic research. This determines which cluster an item belongs to in Topic view. Use 'general' for the _abstract.html item."
+    },
+    "category": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Category label used in the filter UI and displayed on the card in timeline view (e.g. 'Field Recording', 'Studio Work'). Not required for the _abstract.html item."
+    },
+    "type": {
+      "type": "string",
+      "enum": ["normal", "introduction", "conclusion", "imponderable", "reflection", "lookout", "abstract"],
+      "description": "Visual and semantic type of the card. Every non-'normal' type renders with a white label box straddling the card's top border. 'introduction' reads 'Introduction' and, if present, must be the OLDEST item in its topic (enforced at build time). 'conclusion' reads 'Conclusion'; exactly one per topic is required and it must be the newest in its topic (enforced at build time). 'imponderable' reads 'Loose Ends & Unsolved Problems'. 'reflection' reads 'Reflection'. 'lookout' reads 'Lookout & Future Prospects'. 'abstract' reads 'Abstract' and uses a dark surface. NOTE: 'default' here is a JSON Schema annotation used by editors and tooling — it is not enforced by validation.",
+      "default": "normal"
+    },
+    "width": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "description": "Box width multiplier for text box (default: 1.0). Controls line-break behaviour and the width/height ratio without affecting font size. Has no effect on media items (aspect ratios are preserved via the sidecars list)."
+    },
+    "font_size": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "default": 1.0,
+      "description": "Font size multiplier relative to the global baseline, for text/HTML items only. Separate from 'size' so font scale and area can be tuned independently. Omit to use the default of 1.0."
+    },
+    "author": {
+      "type": "string",
+      "description": "Author name (used on the abstract/cover page)."
+    },
+    "year": {
+      "type": "number",
+      "description": "Year of publication (used on the abstract/cover page)."
+    },
+    "institution": {
+      "type": "string",
+      "description": "Institution and/or faculty name (used on the abstract/cover page)."
+    },
+    "summary": {
+      "type": "string",
+      "description": "Short summary or subtitle (used on the abstract/cover page)."
+    },
+    "sidecars": {
+      "type": "array",
+      "description": "Ordered list of media files attached to this item. Each filename must be prefixed with the stem of the parent HTML file (e.g. for 'my-item.html' → 'my-item--clip.mp4').",
+      "items": {
+        "$ref": "#/$defs/sidecar"
+      },
+      "minItems": 0
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "sidecar": {
+      "title": "Sidecar Media File",
+      "type": "object",
+      "required": ["filename", "kind"],
+      "additionalProperties": false,
+      "properties": {
+        "filename": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Filename (not path) of the media file located in the same content folder. Must be prefixed with the stem of the parent HTML file."
+        },
+        "kind": {
+          "type": "string",
+          "enum": ["video", "audio", "picture", "text"],
+          "description": "Media type. Determines the player/renderer used. 'text' sidecars are additional HTML/MD files rendered as separate cards without title or metadata."
+        },
+        "description": {
+          "type": "string",
+          "description": "Short caption shown beneath or alongside the media file. Optional."
+        },
+        "size": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "default": 1.0,
+          "description": "Size multiplier for this media file relative to the global baseline for its kind. Aspect ratio is always preserved; this scales the rendered area. Omit to use the default of 1.0."
+        }
+      }
+    }
+  }
+}

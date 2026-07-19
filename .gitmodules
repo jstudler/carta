@@ -1,0 +1,3 @@
+[submodule "carta-sample-data"]
+	path = carta-sample-data
+	url = https://github.com/jstudler/carta-sample-data.git

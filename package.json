@@ -1,0 +1,47 @@
+{
+  "name": "@jstudler/carta",
+  "version": "1.0.0",
+  "license": "AGPL-3.0-or-later",
+  "description": "Carta — a static, zoomable canvas for presenting artistic research (timeline & topic views).",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc -b --noEmit",
+    "convert:media": "node tools/convert/convert-media.mjs",
+    "convert:images": "node tools/convert/convert-images.mjs"
+  },
+  "dependencies": {
+    "@use-gesture/react": "^10.3.1",
+    "fuse.js": "^7.1.0",
+    "gsap": "^3.13.0",
+    "plyr": "^3.7.8",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "zustand": "^5.0.5"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.8",
+    "@types/js-yaml": "^4.0.9",
+    "@types/marked": "^5.0.2",
+    "@types/node": "^22.15.0",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "@vitejs/plugin-react": "^4.5.0",
+    "ajv": "^8.17.1",
+    "gray-matter": "^4.0.3",
+    "image-size": "^2.0.2",
+    "js-yaml": "^4.1.0",
+    "jsdom": "^26.1.0",
+    "marked": "^18.0.5",
+    "sharp": "^0.34.1",
+    "tailwindcss": "^4.1.8",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5",
+    "vitest": "^3.2.0",
+    "wrangler": "^4.104.0"
+  }
+}
